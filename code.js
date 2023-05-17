@@ -5,8 +5,6 @@ const Player = (name, wins, symbol) => {
 };
 const player1 = Player("Player One", 0, "X");
 const player2 = Player("Player Two", 0, "O");
-console.log(player1);
-console.log(player2);
 //function to push board onto display
 function displayController() {
   for (let i = 0; i < 9; ++i) {
@@ -36,26 +34,41 @@ function winner() {
       }
     });
     if (player1r == 3) {
-      console.log(condition);
       condition.forEach((position) => {
         document.getElementById("space" + position).style["background-color"] =
           "navajowhite";
       });
-      console.log("player 1 wins");
       ++player1.wins;
+      document.getElementById("winner").textContent = "X wins";
+      document.getElementById("xscore").textContent = player1.wins;
       for (let i = 0; i < 9; ++i) {
         document.getElementById("space" + i).style["pointer-events"] = "none";
       }
-      // create reset button
     } else if (player2r == 3) {
-      console.log(condition);
       condition.forEach((position) => {
         document.getElementById("space" + position).style["background-color"] =
           "navajowhite";
       });
-      console.log("player 2 wins");
       ++player2.wins;
-      // create reset button
+      document.getElementById("winner").textContent = "O wins";
+      document.getElementById("oscore").textContent = player2.wins;
+      for (let i = 0; i < 9; ++i) {
+        document.getElementById("space" + i).style["pointer-events"] = "none";
+      }
+    } else {
+      //check if draw
+      let blank = 0;
+      for (let i = 0; i < 9; ++i) {
+        if (board.at(i) == "") {
+          ++blank;
+        }
+      }
+      if (blank == 0) {
+        for (let i = 0; i < 9; ++i) {
+          document.getElementById("space" + i).style["pointer-events"] = "none";
+        }
+        document.getElementById("winner").textContent = "draw";
+      }
     }
   });
 }
@@ -68,37 +81,39 @@ const getActivePlayer = () => activePlayer;
 //function to get button inputs
 function input() {
   for (let i = 0; i < 9; ++i) {
-    document
-      .getElementById("space" + i)
-      .addEventListener("click", function active() {
-        if (board.at(i) == "") {
-          board.splice(i, 1, getActivePlayer().symbol);
-          console.log(board);
-          turnSwitch();
-          winner();
-          return displayController();
-        }
-      });
+    document.getElementById("space" + i).addEventListener("mouseenter", () => {
+      if (board.at(i) == "") {
+        document.getElementById(i).textContent = getActivePlayer().symbol;
+        document.getElementById(i).style.color = "peru";
+      }
+    });
+    document.getElementById("space" + i).addEventListener("mouseleave", () => {
+      if (board.at(i) == "") {
+        document.getElementById(i).textContent = "";
+      }
+    });
+    document.getElementById("space" + i).addEventListener("click", () => {
+      if (board.at(i) == "") {
+        document.getElementById(i).style.color = "maroon";
+        board.splice(i, 1, getActivePlayer().symbol);
+        turnSwitch();
+        winner();
+        return displayController();
+      }
+    });
   }
 }
 input();
 //function to reset board
 function reset() {
   board = ["", "", "", "", "", "", "", "", ""];
-  console.log(player1);
-  console.log(player2);
   activePlayer = player1;
   for (let i = 0; i < 9; ++i) {
-    document.getElementById("space" + i).style["pointer-events"] = "auto";
-    document.getElementById("space" + i).style["background-color"] = "seashell";
+    let current = document.getElementById("space" + i);
+    current.style["pointer-events"] = "auto";
+    current.style["background-color"] = "seashell";
   }
+  document.getElementById("winner").textContent = "";
   input();
   displayController();
 }
-// runs displayController X
-// creates players X
-// sets turn X
-// player clicks => checks player => uses player symbol X
-// runs displayController and winner X
-// repeats until finds winner X
-// if winner, find winning condition to highlight, reset game
