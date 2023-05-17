@@ -1,0 +1,32 @@
+body {
+  font-family: Helvetica, sans-serif;
+  background-color: ivory;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.board {
+  background-color: blanchedalmond;
+  width: 500px;
+  height: 500px;
+  display: grid;
+  align-items: center;
+  justify-content: space-between;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+.space {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+}
+.space:hover {
+  background-color:lightgray
+}
+.space:active {
+  background-color: white;
+}
