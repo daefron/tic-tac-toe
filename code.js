@@ -26,6 +26,7 @@ function winner() {
   Object.values(winConditions).forEach((condition) => {
     let player1r = 0;
     let player2r = 0;
+    let blank = 0;
     condition.forEach((position) => {
       if (board.at(position) == "X") {
         return ++player1r;
@@ -56,13 +57,7 @@ function winner() {
         document.getElementById("space" + i).style["pointer-events"] = "none";
       }
     } else {
-      //check if draw
-      let blank = 0;
-      for (let i = 0; i < 9; ++i) {
-        if (board.at(i) == "") {
-          ++blank;
-        }
-      }
+      ++blank;
       if (blank == 0) {
         for (let i = 0; i < 9; ++i) {
           document.getElementById("space" + i).style["pointer-events"] = "none";
@@ -70,6 +65,7 @@ function winner() {
         document.getElementById("winner").textContent = "draw";
       }
     }
+    
   });
 }
 //function to set turns
@@ -95,6 +91,8 @@ function input() {
     document.getElementById("space" + i).addEventListener("click", () => {
       if (board.at(i) == "") {
         document.getElementById(i).style.color = "maroon";
+        document.getElementById("space" + i).style["background-color"] =
+          "bisque";
         board.splice(i, 1, getActivePlayer().symbol);
         turnSwitch();
         winner();
