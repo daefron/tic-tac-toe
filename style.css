@@ -9,7 +9,7 @@ body {
   color: maroon;
 }
 .main {
-  width: min(90vw, 550px);
+  width: min(89vw, 550px);
   background-color: seashell;
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   gap: 10px;
-  padding: 10px;
+  padding: min(2vw, 10px);
 }
 .space {
   width: 100%;
@@ -51,7 +51,7 @@ body {
 }
 .score {
   width: 95%;
-  padding: 10px;
+  padding: min(2vw, 10px);
   background-color: seashell;
   display: flex;
   gap: 10px;
