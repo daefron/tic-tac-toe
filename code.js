@@ -346,6 +346,7 @@ function reset() {
   document.getElementById("winner").textContent = "";
   document.getElementById("change").style["pointer-events"] = "all";
   win = 0;
+  diagCondition = 0;
   input();
   displayController();
 }
