@@ -93,7 +93,7 @@ body {
   margin-top: min(48vw, 273px);
   padding-bottom: 10px;
   width: min(25vw, 160px);
-  height: min(23vw, 150px);
+  height: min(25vw, 150px);
   background-color: seashell;
   display: flex;
   flex-direction: column;
@@ -107,7 +107,6 @@ body {
   margin-top: 12px;
 }
 .playerselect button {
-  height: 50px;
   width: 90%;
   border-style: none;
   background-color: bisque;

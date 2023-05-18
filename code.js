@@ -95,6 +95,7 @@ function winner() {
   if (blank == 0 && win == 0) {
     for (let i = 0; i < 9; ++i) {
       document.getElementById("space" + i).style["pointer-events"] = "none";
+      document.getElementById("space" + i).style["background-color"] = "navajowhite";
     }
     document.getElementById("winner").textContent = "draw";
   }
@@ -240,6 +241,7 @@ function unbeatableAiTurn() {
       }
     }
     //if can put in corner = put in corner
+    diagCondition = 1;
     if (testCondition == 0) {
       Object.values(winConditions).forEach((condition) => {
         let xAmount = 0;
