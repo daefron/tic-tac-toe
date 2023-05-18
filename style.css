@@ -50,7 +50,7 @@ body {
   user-select: none;
 }
 .score {
-  width: calc(95%);
+  width: 95%;
   padding: 10px;
   background-color: seashell;
   display: flex;
