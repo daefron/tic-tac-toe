@@ -14,18 +14,36 @@ const Player = (name, wins, symbol) => {
   return { name, wins, symbol };
 };
 const player1 = Player("Player One", 0, "X");
-let player2 = Player("no player", 0, "O");
+let activePlayer = player1;
 function playerHuman() {
   document.querySelector(".playermodal").style.visibility = "hidden";
-  return (player2 = Player("Player Two", 0, "O"));
+  reset();
+  player2 = Player("Player Two", 0, "O");
+  document.getElementById("change").textContent = "player"
+  document.getElementById("xscore").textContent = player1.wins;
+  document.getElementById("oscore").textContent = player2.wins;
 }
 function playerAi() {
   document.querySelector(".playermodal").style.visibility = "hidden";
-  return (player2 = Player("AI", 0, "O"));
+  reset();
+  player2 = Player("AI", 0, "O");
+  document.getElementById("change").textContent = "random"
+  document.getElementById("xscore").textContent = player1.wins;
+  document.getElementById("oscore").textContent = player2.wins;
 }
 function playerAiUnbeatable() {
   document.querySelector(".playermodal").style.visibility = "hidden";
-  return (player2 = Player("Unbeatable AI", 0, "O"));
+  reset();
+  player2 = Player("Unbeatable AI", 0, "O");
+  document.getElementById("change").textContent = "unbeatable"
+  document.getElementById("xscore").textContent = player1.wins;
+  document.getElementById("oscore").textContent = player2.wins;
+}
+playerHuman();
+function changeOpponent() {
+  document.querySelector(".playermodal").style.visibility = "visible";
+  player1.wins = 0;
+  player2.wins = 0;
 }
 function displayController() {
   for (let i = 0; i < 9; ++i) {
@@ -81,13 +99,12 @@ function winner() {
   }
   return win;
 }
-let activePlayer = player1;
 function turnSwitch(win) {
   activePlayer = activePlayer === player1 ? player2 : player1;
   if (board.includes("") == true) {
     if (activePlayer.name == "AI" && win == 0) {
       aiTurn();
-    } else if ((activePlayer.name = "Unbeatable AI" && win == 0)) {
+    } else if (activePlayer.name == "Unbeatable AI" && win == 0) {
       unbeatableAiTurn();
     }
   }
@@ -219,6 +236,7 @@ function input() {
     });
     document.getElementById("space" + i).addEventListener("click", () => {
       if (board.at(i) == "") {
+        document.getElementById("change").style["pointer-events"] = "all";
         document.getElementById(i).style.color = "maroon";
         document.getElementById("space" + i).style["background-color"] =
           "bisque";
@@ -239,6 +257,7 @@ function reset() {
     current.style["background-color"] = "seashell";
   }
   document.getElementById("winner").textContent = "";
+  document.getElementById("change").style["pointer-events"] = "all";
   win = 0;
   input();
   displayController();
