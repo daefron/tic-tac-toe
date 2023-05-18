@@ -1,13 +1,14 @@
 let board = ["", "", "", "", "", "", "", "", ""];
+let diagCondition = 0;
 const winConditions = {
-  diag1: [0, 4, 8],
-  diag2: [2, 4, 6],
   row1: [0, 1, 2],
   row2: [3, 4, 5],
   row3: [6, 7, 8],
   column1: [0, 3, 6],
   column2: [1, 4, 7],
   column3: [2, 5, 8],
+  diag1: [0, 4, 8],
+  diag2: [2, 4, 6],
 };
 var win = 0;
 const Player = (name, wins, symbol) => {
@@ -19,7 +20,7 @@ function playerHuman() {
   document.querySelector(".playermodal").style.visibility = "hidden";
   reset();
   player2 = Player("Player Two", 0, "O");
-  document.getElementById("change").textContent = "player"
+  document.getElementById("change").textContent = "player";
   document.getElementById("xscore").textContent = player1.wins;
   document.getElementById("oscore").textContent = player2.wins;
 }
@@ -27,7 +28,7 @@ function playerAi() {
   document.querySelector(".playermodal").style.visibility = "hidden";
   reset();
   player2 = Player("AI", 0, "O");
-  document.getElementById("change").textContent = "random"
+  document.getElementById("change").textContent = "random";
   document.getElementById("xscore").textContent = player1.wins;
   document.getElementById("oscore").textContent = player2.wins;
 }
@@ -35,7 +36,7 @@ function playerAiUnbeatable() {
   document.querySelector(".playermodal").style.visibility = "hidden";
   reset();
   player2 = Player("Unbeatable AI", 0, "O");
-  document.getElementById("change").textContent = "unbeatable"
+  document.getElementById("change").textContent = "unbeatable";
   document.getElementById("xscore").textContent = player1.wins;
   document.getElementById("oscore").textContent = player2.wins;
 }
@@ -139,6 +140,7 @@ function unbeatableAiTurn() {
     document.getElementById("space" + 4).style["background-color"] = "bisque";
   } else if (board.at(4) !== "") {
     let splicePosition = 0;
+    //if can win = win
     Object.values(winConditions).forEach((condition) => {
       let xAmount = 0;
       let oAmount = 0;
@@ -161,6 +163,7 @@ function unbeatableAiTurn() {
         testCondition = 1;
       }
     });
+    //if can block = block
     if (testCondition == 0) {
       Object.values(winConditions).forEach((condition) => {
         let xAmount = 0;
@@ -185,6 +188,57 @@ function unbeatableAiTurn() {
         }
       });
     }
+    if (testCondition == 0 && diagCondition !== 1) {
+      let xAmount = 0;
+      let oAmount = 0;
+      let blankAmount = 0;
+      let blankPosition = 0;
+      console.log(winConditions.diag1);
+      winConditions.diag1.forEach((position) => {
+        if (board.at(position) == "X") {
+          blankPosition = position;
+          return ++xAmount;
+        }
+        if (board.at(position) == "") {
+          return ++blankAmount;
+        }
+        if (board.at(position) == "O") {
+          return ++oAmount;
+        }
+      });
+      if (xAmount == 2 && blankAmount == 0 && oAmount == 1) {
+        console.log(blankPosition);
+        splicePosition = blankPosition -1;
+        console.log(splicePosition);
+        testCondition = 1;
+        diagCondition = 1;
+      }
+      console.log(winConditions.diag2);
+      xAmount = 0;
+      oAmount = 0;
+      blankAmount = 0;
+      blankPosition = 0;
+      winConditions.diag2.forEach((position) => {
+        if (board.at(position) == "X") {
+          blankPosition = position;
+          return ++xAmount;
+        }
+        if (board.at(position) == "") {
+          return ++blankAmount;
+        }
+        if (board.at(position) == "O") {
+          return ++oAmount;
+        }
+      });
+      if (xAmount == 2 && blankAmount == 0 && oAmount == 1) {
+        console.log(blankPosition);
+        splicePosition = blankPosition + 1;
+        console.log(splicePosition);
+        testCondition = 1;
+        diagCondition = 1;
+      }
+    }
+    //if can put in corner = put in corner
     if (testCondition == 0) {
       Object.values(winConditions).forEach((condition) => {
         let xAmount = 0;
@@ -203,12 +257,21 @@ function unbeatableAiTurn() {
             return ++oAmount;
           }
         });
-        if ((xAmount > 0 && blankAmount > 0 && oAmount == 0) && (blankPosition == 0 || blankPosition == 2 || blankPosition == 6 || blankPosition == 8)) {
+        if (
+          xAmount > 0 &&
+          blankAmount > 0 &&
+          oAmount == 0 &&
+          (blankPosition == 0 ||
+            blankPosition == 2 ||
+            blankPosition == 6 ||
+            blankPosition == 8)
+        ) {
           splicePosition = blankPosition;
           testCondition = 1;
         }
       });
     }
+    //if half a winning move set =
     if (testCondition == 0) {
       Object.values(winConditions).forEach((condition) => {
         let xAmount = 0;
