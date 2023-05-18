@@ -188,6 +188,7 @@ function unbeatableAiTurn() {
         }
       });
     }
+    //checks for diag strategy
     if (testCondition == 0 && diagCondition !== 1) {
       let xAmount = 0;
       let oAmount = 0;
@@ -208,7 +209,7 @@ function unbeatableAiTurn() {
       });
       if (xAmount == 2 && blankAmount == 0 && oAmount == 1) {
         console.log(blankPosition);
-        splicePosition = blankPosition -1;
+        splicePosition = blankPosition - 1;
         console.log(splicePosition);
         testCondition = 1;
         diagCondition = 1;
@@ -271,7 +272,7 @@ function unbeatableAiTurn() {
         }
       });
     }
-    //if half a winning move set =
+    //if half a winning move = pre-emptive block
     if (testCondition == 0) {
       Object.values(winConditions).forEach((condition) => {
         let xAmount = 0;
