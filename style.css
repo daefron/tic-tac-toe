@@ -100,6 +100,8 @@ body {
 .playerselect p {
   text-align: center;
   font-weight: bold;
+  margin-bottom: 0px;
+  margin-top: 12px;
 }
 .playerselect button {
   height: 50px;

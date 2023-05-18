@@ -1,4 +1,14 @@
 let board = ["", "", "", "", "", "", "", "", ""];
+const winConditions = {
+  row1: [0, 1, 2],
+  row2: [3, 4, 5],
+  row3: [6, 7, 8],
+  column1: [0, 3, 6],
+  column2: [1, 4, 7],
+  column3: [2, 5, 8],
+  diag1: [0, 4, 8],
+  diag2: [2, 4, 6],
+};
 var win = 0;
 const Player = (name, wins, symbol) => {
   return { name, wins, symbol };
@@ -13,22 +23,16 @@ function playerAi() {
   document.querySelector(".playermodal").style.visibility = "hidden";
   return (player2 = Player("AI", 0, "O"));
 }
+function playerAiUnbeatable() {
+  document.querySelector(".playermodal").style.visibility = "hidden";
+  return (player2 = Player("Unbeatable AI", 0, "O"));
+}
 function displayController() {
   for (let i = 0; i < 9; ++i) {
     document.getElementById(i).textContent = board[i];
   }
 }
 function winner() {
-  const winConditions = {
-    row1: [0, 1, 2],
-    row2: [3, 4, 5],
-    row3: [6, 7, 8],
-    column1: [0, 3, 6],
-    column2: [1, 4, 7],
-    column3: [2, 5, 8],
-    diag1: [0, 4, 8],
-    diag2: [2, 4, 6],
-  };
   Object.values(winConditions).forEach((condition) => {
     let player1r = 0;
     let player2r = 0;
@@ -50,7 +54,7 @@ function winner() {
       for (let i = 0; i < 9; ++i) {
         document.getElementById("space" + i).style["pointer-events"] = "none";
       }
-      return win = 1;
+      return (win = 1);
     } else if (player2r == 3) {
       condition.forEach((position) => {
         document.getElementById("space" + position).style["background-color"] =
@@ -62,36 +66,36 @@ function winner() {
       for (let i = 0; i < 9; ++i) {
         document.getElementById("space" + i).style["pointer-events"] = "none";
       }
-      return win = 1;
+      return (win = 1);
     }
   });
   let blank = 0;
   for (let i = 0; i < 9; ++i) {
-    if (board.at(i) == "")
-    ++blank;
+    if (board.at(i) == "") ++blank;
   }
-  if (blank == 0 && winner == 0) {
+  if (blank == 0 && win == 0) {
     for (let i = 0; i < 9; ++i) {
       document.getElementById("space" + i).style["pointer-events"] = "none";
     }
     document.getElementById("winner").textContent = "draw";
   }
-  console.log(win);
   return win;
 }
 let activePlayer = player1;
 function turnSwitch(win) {
-  console.log(win);
   activePlayer = activePlayer === player1 ? player2 : player1;
-  if (activePlayer.name == "AI" && win == 0) {
-    aiTurn();
-  } 
+  if (board.includes("") == true) {
+    if (activePlayer.name == "AI" && win == 0) {
+      aiTurn();
+    } else if ((activePlayer.name = "Unbeatable AI" && win == 0)) {
+      unbeatableAiTurn();
+    }
+  }
 }
 function aiTurn() {
   let blank = 0;
   for (let i = 0; i < 9; ++i) {
-    if (board.at(i) == "")
-    ++blank;
+    if (board.at(i) == "") ++blank;
   }
   if (blank == 0) {
     return;
@@ -99,12 +103,101 @@ function aiTurn() {
   let tester = -1;
   while (tester == -1) {
     let num = Math.floor(Math.random() * 9);
-    console.log(num);
     if (board.at(num) == "") {
       board.splice(num, 1, getActivePlayer().symbol);
       document.getElementById(num).style.color = "maroon";
-      document.getElementById("space" + num).style["background-color"] = "bisque";
+      document.getElementById("space" + num).style["background-color"] =
+        "bisque";
       tester = num;
+    }
+  }
+  winner();
+  turnSwitch();
+}
+function unbeatableAiTurn() {
+  let testCondition = 0;
+  if (board.at(4) == "") {
+    board.splice(4, 1, getActivePlayer().symbol);
+    document.getElementById(4).style.color = "maroon";
+    document.getElementById("space" + 4).style["background-color"] = "bisque";
+  } else if (board.at(4) !== "") {
+    let splicePosition = 0;
+    Object.values(winConditions).forEach((condition) => {
+      let xAmount = 0;
+      let oAmount = 0;
+      let blankAmount = 0;
+      let blankPosition = 0;
+      condition.forEach((position) => {
+        if (board.at(position) == "X") {
+          return ++xAmount;
+        }
+        if (board.at(position) == "") {
+          blankPosition = position;
+          return ++blankAmount;
+        }
+        if (board.at(position) == "O") {
+          return ++oAmount;
+        }
+      });
+      if (oAmount > 1 && blankAmount > 0 && xAmount == 0) {
+        splicePosition = blankPosition;
+        testCondition = 1;
+      }
+    });
+    if (testCondition == 0) {
+      Object.values(winConditions).forEach((condition) => {
+        let xAmount = 0;
+        let oAmount = 0;
+        let blankAmount = 0;
+        let blankPosition = 0;
+        condition.forEach((position) => {
+          if (board.at(position) == "X") {
+            return ++xAmount;
+          }
+          if (board.at(position) == "") {
+            blankPosition = position;
+            return ++blankAmount;
+          }
+          if (board.at(position) == "O") {
+            return ++oAmount;
+          }
+        });
+        if (xAmount > 1 && blankAmount > 0 && oAmount == 0) {
+          splicePosition = blankPosition;
+          testCondition = 1;
+        }
+      });
+    }
+    if (testCondition == 0) {
+      Object.values(winConditions).forEach((condition) => {
+        let xAmount = 0;
+        let oAmount = 0;
+        let blankAmount = 0;
+        let blankPosition = 0;
+        condition.forEach((position) => {
+          if (board.at(position) == "X") {
+            return ++xAmount;
+          }
+          if (board.at(position) == "") {
+            blankPosition = position;
+            return ++blankAmount;
+          }
+          if (board.at(position) == "O") {
+            return ++oAmount;
+          }
+        });
+        if (xAmount > 0 && blankAmount > 0 && oAmount == 0) {
+          splicePosition = blankPosition;
+          testCondition = 1;
+        }
+      });
+    }
+    if (testCondition == 1) {
+      board.splice(splicePosition, 1, getActivePlayer().symbol);
+      document.getElementById(splicePosition).style.color = "maroon";
+      document.getElementById("space" + splicePosition).style[
+        "background-color"
+      ] = "bisque";
     }
   }
   winner();
