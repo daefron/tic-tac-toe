@@ -68,9 +68,9 @@ body {
 .score button {
   border-style: none;
   background-color: bisque;
-  width: min(12vw, 100px);
+  width: min(15vw, 100px);
   font-weight: bold;
-  font-size: min(3vw, 16px);
+  font-size: min(2.5vw, 16px);
   color: maroon;
 } 
 .score button:hover {

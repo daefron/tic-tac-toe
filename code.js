@@ -1,13 +1,13 @@
 let board = ["", "", "", "", "", "", "", "", ""];
 const winConditions = {
+  diag1: [0, 4, 8],
+  diag2: [2, 4, 6],
   row1: [0, 1, 2],
   row2: [3, 4, 5],
   row3: [6, 7, 8],
   column1: [0, 3, 6],
   column2: [1, 4, 7],
   column3: [2, 5, 8],
-  diag1: [0, 4, 8],
-  diag2: [2, 4, 6],
 };
 var win = 0;
 const Player = (name, wins, symbol) => {
@@ -180,6 +180,30 @@ function unbeatableAiTurn() {
           }
         });
         if (xAmount > 1 && blankAmount > 0 && oAmount == 0) {
+          splicePosition = blankPosition;
+          testCondition = 1;
+        }
+      });
+    }
+    if (testCondition == 0) {
+      Object.values(winConditions).forEach((condition) => {
+        let xAmount = 0;
+        let oAmount = 0;
+        let blankAmount = 0;
+        let blankPosition = 0;
+        condition.forEach((position) => {
+          if (board.at(position) == "X") {
+            return ++xAmount;
+          }
+          if (board.at(position) == "") {
+            blankPosition = position;
+            return ++blankAmount;
+          }
+          if (board.at(position) == "O") {
+            return ++oAmount;
+          }
+        });
+        if ((xAmount > 0 && blankAmount > 0 && oAmount == 0) && (blankPosition == 0 || blankPosition == 2 || blankPosition == 6 || blankPosition == 8)) {
           splicePosition = blankPosition;
           testCondition = 1;
         }
